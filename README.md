@@ -46,7 +46,8 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-This project uses the "gh-pages" npm package to immediately deploy the app to a gh-pages branch on GitHub, which should correspond with the homepage url in package.json.
+This project uses the "gh-pages" npm package to immediately deploy the app to a gh-pages branch on GitHub, which should correspond with the homepage url in package.json.<br/>
+See more at https://www.npmjs.com/package/gh-pages
 
 <!-- ### `npm run eject`
 
