@@ -22,7 +22,19 @@ const styles = {
 class TeleSearch extends React.Component {
     state = {
         searchTerm: null,
-    }
+    };
+    handleChange = (event) => {
+        this.setState({
+            searchTerm: event.target.value,
+        });
+    };
+    getPlaceholder = (screenState) => {
+        switch(screenState){
+            case 0: return "Tram ID"; 
+            case 1: return "Station Name"; 
+            default: return "";
+        }
+    };
     render() {
         const { classes } = this.props;
         return (
@@ -31,10 +43,10 @@ class TeleSearch extends React.Component {
                     <Grid item xs={8}>
                         <TextField
                             id="search-term"
-                            label="Tram ID"
+                            label={this.getPlaceholder(this.props.screenState)}
                             className={classes.textField}
                             value={this.state.searchTerm}
-                            // onChange={this.handleChange('name')}
+                            onChange={this.handleChange}
                             margin="normal"
                         />
                     </Grid>

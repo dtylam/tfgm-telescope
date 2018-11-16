@@ -13,32 +13,35 @@ const styles = {
         bottom: 0,
         borderTop: "1px solid lightgrey"
     },
+    // // doesnt work :(
+    // bottomNavigationAction: {
+    //     width: "50%",
+    // }
 };
 
 class TeleBtmBar extends React.Component {
-    //   state = {
-    //     value: 0,
-    //   };
+    state = {
+        value: 0,
+    };
 
-    //   handleChange = (event, value) => {
-    //     this.setState({ value });
-    //   };
+    handleChange = (event, value) => {
+        this.setState({ value });
+        this.props.setScreen( value );
+    };
 
     render() {
         const { classes } = this.props;
-        // const { value } = this.state;
+        const { value } = this.state;
 
         return (
             <BottomNavigation
-                // value={value}
-                // onChange={this.handleChange}
+                value={value}
+                onChange={this.handleChange}
                 showLabels
                 className={classes.root}
             >
                 <BottomNavigationAction label="Tram ID" icon={<TramIcon />} />
-
                 <BottomNavigationAction label="Stop Name" icon={<StopIcon />} />
-
             </BottomNavigation>
         );
     }
