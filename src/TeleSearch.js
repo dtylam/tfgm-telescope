@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import { Button, Grid, TextField } from '@material-ui/core';
+import _token from './secret.js';
+
+const axios = require('axios');
 
 const styles = {
     root: {
@@ -31,10 +34,21 @@ class TeleSearch extends React.Component {
     getPlaceholder = (screenState) => {
         switch(screenState){
             case 0: return "Tram ID"; 
-            case 1: return "Station Name"; 
+            case 1: return "Stop Name"; 
             default: return "";
         }
     };
+    sendRequest = () => {
+        let searchTerm = this.state.searchTerm;
+        if (searchTerm === null || searchTerm === "") return;
+        // https://api.tfgm.com/odata/Metrolinks({Id})[?$select]
+        console.log(_token);
+        axios({
+            method: "get",
+            url: "https://api.tfgm.com/odata/Metrolinks({Id})?" + this.state.searchTerm,
+            headers: {"Ocp-Apim-Subscription-Key": _token}
+        });
+    }
     render() {
         const { classes } = this.props;
         return (
@@ -51,7 +65,12 @@ class TeleSearch extends React.Component {
                         />
                     </Grid>
                     <Grid item xs={4}>
-                        <Button variant="contained" color="secondary" className={classes.button}>
+                        <Button 
+                            variant="contained" 
+                            color="secondary" 
+                            className={classes.button}
+                            onClick={this.sendRequest}
+                        >
                             Find
                         </Button>
                     </Grid>
@@ -59,9 +78,6 @@ class TeleSearch extends React.Component {
                         <p>Note: Under Construction!</p>
                     </Grid>
                 </Grid>
-
-
-
             </div>
         );
     }
