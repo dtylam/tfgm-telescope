@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/tfgm-telescope/precache-manifest.00de00aeb50fbe46b9d754793159ad10.js"
+  "/tfgm-telescope/precache-manifest.71b53fb9ac45c814748a76b53aeaa6c1.js"
 );
 
 workbox.clientsClaim();
