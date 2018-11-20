@@ -17,8 +17,7 @@ const styles = {
         flexGrow: 1,
     },
     menuButton: {
-        marginLeft: -12,
-        marginRight: 20,
+        marginLeft: -6,
     },
 };
 
@@ -28,7 +27,7 @@ function TeleAppBar(props) {
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar>
-                    <img className={classes.menuButton} src={require('./favicon.png')} style={{ height: "2em" }} />
+                    <img className={classes.menuButton} src={require('./favicon.png')} style={{ height: "2em" }} alt="logo"/>
                     <Typography variant="h6" color="inherit" className={classes.grow}>
                         TfGM Telescope
                     </Typography>

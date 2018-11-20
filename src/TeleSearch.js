@@ -24,7 +24,8 @@ const styles = {
 
 class TeleSearch extends React.Component {
     state = {
-        searchTerm: null,
+        searchTerm: "",
+        response: null,
     };
     handleChange = (event) => {
         this.setState({
@@ -32,22 +33,41 @@ class TeleSearch extends React.Component {
         });
     };
     getPlaceholder = (screenState) => {
-        switch(screenState){
-            case 0: return "Tram ID"; 
-            case 1: return "Stop Name"; 
+        switch (screenState) {
+            case 0: return "Tram ID";
+            case 1: return "Stop Name";
             default: return "";
         }
     };
     sendRequest = () => {
-        let searchTerm = this.state.searchTerm;
-        if (searchTerm === null || searchTerm === "") return;
+        const searchTerm = this.state.searchTerm;
+        if (searchTerm === "") return;
+
         // https://api.tfgm.com/odata/Metrolinks({Id})[?$select]
-        console.log(_token);
-        axios({
-            method: "get",
-            url: "https://api.tfgm.com/odata/Metrolinks({Id})?" + this.state.searchTerm,
-            headers: {"Ocp-Apim-Subscription-Key": _token}
-        });
+
+        // //   CORS error
+        // const config = {
+        //     headers: {
+        //         "Ocp-Apim-Subscription-Key": _token,
+        //         "Access-Control-Allow-Origin": "*",
+        //         "Access-Control-Allow-Methods": "GET",
+        //         "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
+        //         // "Content-Type": "application/json",
+        //     }
+        //   };
+        // axios.get("https://api.tfgm.com/odata/Metrolinks(" + escape(this.state.searchTerm) + ")", config)
+        //         .then((resp) => {
+        //             this.setState({
+        //                 response: resp.json()
+        //             }
+        //         )})
+        //         .catch((error) => {
+        //             console.log(error);
+        //             this.setState({
+        //                 response: JSON.stringify(error)
+        //             }
+        //         )});
+
     }
     render() {
         const { classes } = this.props;
@@ -65,14 +85,17 @@ class TeleSearch extends React.Component {
                         />
                     </Grid>
                     <Grid item xs={4}>
-                        <Button 
-                            variant="contained" 
-                            color="secondary" 
+                        <Button
+                            variant="contained"
+                            color="secondary"
                             className={classes.button}
                             onClick={this.sendRequest}
                         >
                             Find
                         </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <p>{this.state.response}</p>
                     </Grid>
                     <Grid item xs={12}>
                         <p>Note: Under Construction!</p>
