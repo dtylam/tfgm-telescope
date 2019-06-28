@@ -40,7 +40,7 @@ class TeleBtmBar extends React.Component {
                 showLabels
                 className={classes.root}
             >
-                <BottomNavigationAction label="Tram ID" icon={<TramIcon />} />
+                {/* <BottomNavigationAction label="Tram ID" icon={<TramIcon />} /> */}
                 <BottomNavigationAction label="Stop Name" icon={<StopIcon />} />
             </BottomNavigation>
         );

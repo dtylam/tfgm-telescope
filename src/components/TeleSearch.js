@@ -1,14 +1,13 @@
 import React from 'react';
+import Select from 'react-select';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import { Button, Grid, TextField, Card, CardContent, Typography, CircularProgress, Snackbar, IconButton } from '@material-ui/core';
-import _token from './secret.js';
 import CloseIcon from '@material-ui/icons/Close';
 
-//  API does not allow CORS, have to use proxy
-const _proxy = "https://cors-anywhere.herokuapp.com/";
-const _api = "https://api.tfgm.com/odata/";
+const _api = "http://localhost:7071/api/";
+const _getLines = "GetLines";
 
 const styles = {
     root: {
@@ -22,15 +21,21 @@ const styles = {
         margin: 24,
         height: "50%",
         float: "right",
+    },
+    select: {
+        margin: 24,
     }
 };
 
 class TeleSearch extends React.Component {
     state = {
-        searchTerm: "",
         response: null,
-        loading: false,
+        resultsLoading: false,
+        linesLoading: true,
+        stopsLoading: false,
         error: "",
+        lineOptions: [],
+        stopOptions: [],
         // cards: [],
     };
     handleChange = (event) => {
@@ -45,6 +50,20 @@ class TeleSearch extends React.Component {
             default: return "";
         }
     };
+    getLines = () => {
+        fetch(_api + _getLines, {
+            method: "get",
+            headers: new Headers({
+            })
+        }).then(response => 
+            response.json().then(data => {
+                this.setState({
+                    linesLoading: false,
+                    lineOptions: data.map((i) => { return { value: i, label: i } })
+                })
+            })
+        );
+    }
     sendRequest = () => {
         const searchTerm = this.state.searchTerm;
         if (searchTerm === "") return;
@@ -52,11 +71,9 @@ class TeleSearch extends React.Component {
             loading: true,
         })
         // https://api.tfgm.com/odata/Metrolinks({Id})[?$select]
-        fetch(_proxy + _api + "Metrolinks(" + escape(this.state.searchTerm) + ")", {
+        fetch(_api + "Metrolinks(" + escape(this.state.searchTerm) + ")", {
             method: "get",
             headers: new Headers({
-                "Ocp-Apim-Subscription-Key": _token,
-                "Origin": _proxy,
             })
         }).then(response => {
             // console.log(response.status);
@@ -88,32 +105,35 @@ class TeleSearch extends React.Component {
     };
     render() {
         const { classes } = this.props;
-        const { searchTerm, response, loading, error } = this.state;
+        const { response, resultsLoading, linesLoading, stopsLoading, error, lineOptions, stopOptions } = this.state;
         return (
             <div className={classes.root} >
                 <Grid container>
-                    <Grid item xs={8}>
-                        <TextField
-                            id="search-term"
-                            label={this.getPlaceholder(this.props.screenState)}
-                            className={classes.textField}
-                            value={searchTerm}
-                            onChange={this.handleChange}
-                            margin="normal"
+                    <Grid item xs={5}>
+                        <Select
+                            className={classes.select}
+                            isLoading={linesLoading}
+                            isClearable={true}
+                            isSearchable={true}
+                            name="Line"
+                            placeholder="Select Line"
+                            options={lineOptions}
                         />
                     </Grid>
-                    <Grid item xs={4}>
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            className={classes.button}
-                            onClick={this.sendRequest}
-                        >
-                            Find
-                        </Button>
+                    <Grid item xs={6}>
+                        <Select
+                            className={classes.select}
+                            isDisabled={true}
+                            isLoading={stopsLoading}
+                            isClearable={true}
+                            isSearchable={true}
+                            name="Stop"
+                            placeholder="Select Stop"
+                            options={stopOptions}
+                        />
                     </Grid>
                     <Grid item xs={12}>
-                        {loading ? <CircularProgress className={classes.progress} />
+                        {resultsLoading ? <CircularProgress className={classes.progress} />
                             : <div></div>
                         }
                         <Snackbar
@@ -164,6 +184,9 @@ class TeleSearch extends React.Component {
                 </Grid>
             </div>
         );
+    }
+    componentDidMount() {
+        this.getLines();
     }
 }
 

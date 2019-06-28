@@ -27,7 +27,7 @@ function TeleAppBar(props) {
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar>
-                    <img className={classes.menuButton} src={require('./favicon.png')} style={{ height: "2em" }} alt="logo"/>
+                    <img className={classes.menuButton} src={require('../favicon.png')} style={{ height: "2em" }} alt="logo"/>
                     <Typography variant="h6" color="inherit" className={classes.grow}>
                         TfGM Telescope
                     </Typography>
